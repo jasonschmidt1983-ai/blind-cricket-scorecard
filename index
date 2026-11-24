@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Blind Cricket Live Scorecard — ACT &amp; Community Edition</title>
+  <style>
+    :root {
+      --primary: #002B5C;      /* ACT Navy Blue */
+      --primary-dark: #001B3A;
+      --accent: #FFB81C;       /* ACT Gold */
+      --accent-text: #111827;
+      --bg: #F3F4F6;
+      --surface: #FFFFFF;
+      --surface-alt: #F9FAFB;
+      --text: #111827;
+      --text-muted: #4B5563;
+      --border: #D1D5DB;
+      --success: #047857;
+      --danger: #B91C1C;
+      --warning-bg: #FEF3C7;
+      --warning-text: #92400E;
+      --b1-bg: #FFFFFF;
+      --b1-text: #111827;
+      --b1-border: #111827;
+      --b2-bg: #DC2626;
+      --b2-text: #FFFFFF;
+      --b3-bg: #1D4ED8;
+      --b3-text: #FFFFFF;
+    }
+
+    body.sunlight-mode {
+      --bg: #FFFFFF;
+      --surface: #FFFFFF;
+      --surface-alt: #F3F4F6;
+      --text: #000000;
+      --text-muted: #1F2937;
+      --border: #000000;
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.4;
+      padding-bottom: 84px;
+    }
+
+    header {
+      background: var(--primary);
+      color: #FFFFFF;
+      padding: 12px 16px;
+      border-bottom: 4px solid var(--accent);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .brand-title {
+      font-size: 1.05rem;
+      font-weight: 800;
+      letter-spacing: 0.3px;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .brand-badge {
+      background: var(--accent);
+      color: var(--accent-text);
+      font-size: 0.7rem;
+      font-weight: 800;
+      padding: 2px 6px;
+      border-radius: 4px;
+      text-transform: uppercase;
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 6px;
+    }
+
+    .btn-header {
+      background: rgba(255, 255, 255, 0.15);
+      color: #FFFFFF;
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      border-radius: 6px;
+      padding: 6px 10px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .btn-header.active {
+      background: var(--accent);
+      color: var(--accent-text);
+      border-color: var(--accent);
+    }
+
+    .container {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 12px;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px;
+      margin-bottom: 12px;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    }
+
+    .card-title {
+      font-size: 0.85rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--primary);
+      margin: 0 0 10px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    body.sunlight-mode .card-title {
+      color: #000000;
+    }
+
+    .scoreboard-hero {
+      background: var(--primary);
+      color: #FFFFFF;
+      border-radius: 10px;
+      padding: 14px 16px;
+      margin-bottom: 12px;
+      border-left: 6px solid var(--accent);
+    }
+
+    .match-meta {
+      font-size: 0.8rem;
+      opacity: 0.9;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin-bottom: 6px;
+    }
+
+    .score-main-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .team-name-big {
+      font-size: 1.25rem;
+      font-weight: 800;
+    }
+
+    .score-big {
+      font-size: 2.1rem;
+      font-weight: 900;
+      color: var(--accent);
+      line-height: 1.1;
+    }
+
+    .overs-big {
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: #FFFFFF;
+    }
+
+    .target-banner {
+      margin-top: 8px;
+      padding-top: 8px;
+      border-top: 1px solid rgba(255, 255, 255, 0.2);
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--accent);
+    }
+
+    .quota-strip {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .pill-stat {
+      flex: 1 1 140px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 8px 10px;
+      font-size: 0.82rem;
+    }
+
+    .pill-stat strong {
+      display: block;
+      font-size: 0.95rem;
+    }
+
+    .pill-stat.warn {
+      background: var(--warning-bg);
+      color: var(--warning-text);
+      border-color: #F59E0B;
+    }
+
+    .pill-stat.ok {
+      border-left: 4px solid var(--success);
+    }
+
+    .badge-class {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 800;
+      padding: 1px 6px;
+      border-radius: 4px;
+      vertical-align: middle;
+      margin-left: 4px;
+    }
+
+    .class-B1 {
+      background: var(--b1-bg);
+      color: var(--b1-text);
+      border: 1.5px solid var(--b1-border);
+    }
+
+    .class-B2 {
+      background: var(--b2-bg);
+      color: var(--b2-text);
+    }
+
+    .class-B3 {
+      background: var(--b3-bg);
+      color: var(--b3-text);
+    }
+
+    .batter-box {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px;
+      margin-bottom: 8px;
+      background: var(--surface-alt);
+    }
+
+    .batter-box.striker {
+      border: 2px solid var(--primary);
+      background: #EFF6FF;
+    }
+
+    body.sunlight-mode .batter-box.striker {
+      background: #FEF9C3;
+      border-color: #000000;
+    }
+
+    .batter-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+
+    .batter-name-btn {
+      background: none;
+      border: none;
+      padding: 0;
+      font-size: 1rem;
+      font-weight: 800;
+      color: var(--text);
+      cursor: pointer;
+      text-align: left;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .batter-runs {
+      font-size: 1.1rem;
+      font-weight: 800;
+    }
+
+    .runner-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      font-size: 0.82rem;
+      padding-top: 6px;
+      border-top: 1px dashed var(--border);
+    }
+
+    .runner-row select {
+      flex: 1;
+      max-width: 220px;
+      padding: 5px 8px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      font-size: 0.85rem;
+      background: var(--surface);
+      color: var(--text);
+    }
+
+    .b1-bar {
+      background: #FFFBEB;
+      border: 2px solid #F59E0B;
+      border-radius: 8px;
+      padding: 10px;
+      margin-bottom: 10px;
+    }
+
+    .b1-bar-label {
+      font-size: 0.8rem;
+      font-weight: 800;
+      color: #92400E;
+      margin-bottom: 6px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .toggle-group {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .toggle-btn {
+      padding: 10px 8px;
+      border-radius: 6px;
+      border: 2px solid #D97706;
+      background: #FFFFFF;
+      color: #111827;
+      font-weight: 800;
+      font-size: 0.85rem;
+      cursor: pointer;
+    }
+
+    .toggle-btn.active {
+      background: #D97706;
+      color: #FFFFFF;
+    }
+
+    .keypad-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .key-btn {
+      padding: 14px 6px;
+      border-radius: 8px;
+      border: 1.5px solid var(--border);
+      background: var(--surface);
+      color: var(--text);
+      font-size: 1.1rem;
+      font-weight: 800;
+      cursor: pointer;
+      text-align: center;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+    }
+
+    .key-btn:active {
+      transform: scale(0.97);
+    }
+
+    .key-btn.boundary {
+      background: var(--primary);
+      color: var(--accent);
+      border-color: var(--primary);
+    }
+
+    .key-btn.extra {
+      background: #FEF3C7;
+      border-color: #F59E0B;
+      color: #78350F;
+      font-size: 0.92rem;
+    }
+
+    .key-btn.wicket {
+      background: var(--danger);
+      color: #FFFFFF;
+      border-color: var(--danger);
+      font-size: 0.95rem;
+    }
+
+    .key-sub {
+      display: block;
+      font-size: 0.68rem;
+      font-weight: 600;
+      opacity: 0.85;
+      margin-top: 2px;
+    }
+
+    .over-balls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      align-items: center;
+      margin-top: 8px;
+    }
+
+    .ball-chip {
+      min-width: 34px;
+      height: 34px;
+      padding: 0 8px;
+      border-radius: 17px;
+      background: var(--surface-alt);
+      border: 1.5px solid var(--border);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.82rem;
+      font-weight: 800;
+    }
+
+    .ball-chip.wkt {
+      background: var(--danger);
+      color: #FFFFFF;
+      border-color: var(--danger);
+    }
+
+    .ball-chip.bnd {
+      background: var(--primary);
+      color: var(--accent);
+      border-color: var(--primary);
+    }
+
+    .nav-tabs {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: var(--surface);
+      border-top: 2px solid var(--border);
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      z-index: 50;
+    }
+
+    .nav-tab {
+      padding: 10px 4px;
+      border: none;
+      background: none;
+      color: var(--text-muted);
+      font-size: 0.78rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+    }
+
+    .nav-tab.active {
+      color: var(--primary);
+      background: #EFF6FF;
+      border-top: 3px solid var(--primary);
+    }
+
