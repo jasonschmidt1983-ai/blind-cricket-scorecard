@@ -1,475 +1,130 @@
 <!DOCTYPE html>
 <html lang="en-AU">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Blind Cricket Live Scorecard — ACT &amp; Community Edition</title>
-  <style>
-    :root {
-      --primary: #002B5C;      /* ACT Navy Blue */
-      --primary-dark: #001B3A;
-      --accent: #FFB81C;       /* ACT Gold */
-      --accent-text: #111827;
-      --bg: #F3F4F6;
-      --surface: #FFFFFF;
-      --surface-alt: #F9FAFB;
-      --text: #111827;
-      --text-muted: #4B5563;
-      --border: #D1D5DB;
-      --success: #047857;
-      --danger: #B91C1C;
-      --warning-bg: #FEF3C7;
-      --warning-text: #92400E;
-      --b1-bg: #FFFFFF;
-      --b1-text: #111827;
-      --b1-border: #111827;
-      --b2-bg: #DC2626;
-      --b2-text: #FFFFFF;
-      --b3-bg: #1D4ED8;
-      --b3-text: #FFFFFF;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>Blind Cricket Live Scorecard — ACT</title>
+<style>
+:root{--p:#002B5C;--a:#FFB81C;--bg:#F3F4F6;--s:#FFF;--sa:#F9FAFB;--t:#111827;--m:#4B5563;--b:#D1D5DB;--ok:#047857;--no:#B91C1C;--wb:#FEF3C7;--wt:#92400E}
+body.sun{--bg:#FFF;--s:#FFF;--sa:#F3F4F6;--t:#000;--m:#1F2937;--b:#000}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--t);padding-bottom:78px;line-height:1.35}
+header{background:var(--p);color:#fff;padding:10px 14px;border-bottom:4px solid var(--a);display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:40}
+.title{font-size:1rem;font-weight:800;margin:0;display:flex;align-items:center;gap:6px}
+.tag{background:var(--a);color:#111;font-size:.68rem;font-weight:800;padding:2px 6px;border-radius:4px}
+.hbtn{background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.4);border-radius:6px;padding:6px 9px;font-size:.78rem;font-weight:700;cursor:pointer}
+.hbtn.on{background:var(--a);color:#111;border-color:var(--a)}
+.wrap{max-width:740px;margin:0 auto;padding:10px}
+.card{background:var(--s);border:1px solid var(--b);border-radius:10px;padding:12px;margin-bottom:10px}
+.ctitle{font-size:.8rem;font-weight:800;text-transform:uppercase;color:var(--p);margin:0 0 8px;display:flex;justify-content:space-between;align-items:center}
+body.sun .ctitle{color:#000}
+.hero{background:var(--p);color:#fff;border-radius:10px;padding:12px 14px;margin-bottom:10px;border-left:6px solid var(--a)}
+.meta{font-size:.78rem;opacity:.9;display:flex;justify-content:space-between;margin-bottom:4px}
+.srow{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.tbig{font-size:1.2rem;font-weight:800}
+.sbig{font-size:2rem;font-weight:900;color:var(--a);line-height:1.1}
+.obig{font-size:1rem;font-weight:700}
+.tban{margin-top:6px;padding-top:6px;border-top:1px solid rgba(255,255,255,.2);font-size:.82rem;font-weight:700;color:var(--a)}
+.strip{display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap}
+.pill{flex:1 1 140px;background:var(--s);border:1px solid var(--b);border-radius:8px;padding:7px 9px;font-size:.78rem}
+.pill strong{display:block;font-size:.92rem}
+.pill.warn{background:var(--wb);color:var(--wt);border-color:#F59E0B}
+.pill.ok{border-left:4px solid var(--ok)}
+.cls{display:inline-block;font-size:.7rem;font-weight:800;padding:1px 5px;border-radius:4px;margin-left:4px}
+.c-B1{background:#fff;color:#111;border:1.5px solid #111}
+.c-B2{background:#DC2626;color:#fff}
+.c-B3{background:#1D4ED8;color:#fff}
+.bbox{border:1px solid var(--b);border-radius:8px;padding:9px;margin-bottom:7px;background:var(--sa)}
+.bbox.stk{border:2px solid var(--p);background:#EFF6FF}
+body.sun .bbox.stk{background:#FEF9C3;border-color:#000}
+.btop{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px}
+.nbtn{background:none;border:none;padding:0;font-size:.98rem;font-weight:800;color:var(--t);cursor:pointer;text-align:left}
+.rrow{display:flex;align-items:center;justify-content:space-between;gap:6px;font-size:.8rem;padding-top:5px;border-top:1px dashed var(--b)}
+.rrow select{flex:1;max-width:210px;padding:4px 6px;border-radius:6px;border:1px solid var(--b);background:var(--s);color:var(--t);font-size:.82rem}
+.b1bar{background:#FFFBEB;border:2px solid #F59E0B;border-radius:8px;padding:8px;margin-top:6px}
+.b1lbl{font-size:.75rem;font-weight:800;color:#92400E;margin-bottom:5px;display:flex;justify-content:space-between}
+.tgrp{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.tbtn{padding:8px 6px;border-radius:6px;border:2px solid #D97706;background:#fff;color:#111;font-weight:800;font-size:.8rem;cursor:pointer}
+.tbtn.on{background:#D97706;color:#fff}
+.kgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}
+.kbtn{padding:12px 4px;border-radius:8px;border:1.5px solid var(--b);background:var(--s);color:var(--t);font-size:1.05rem;font-weight:800;cursor:pointer;text-align:center}
+.kbtn.bnd{background:var(--p);color:var(--a);border-color:var(--p)}
+.kbtn.ext{background:#FEF3C7;border-color:#F59E0B;color:#78350F;font-size:.88rem}
+.kbtn.wkt{background:var(--no);color:#fff;border-color:var(--no);font-size:.9rem}
+.ksub{display:block;font-size:.66rem;font-weight:600;opacity:.85;margin-top:2px}
+.oballs{display:flex;flex-wrap:wrap;gap:5px;margin-top:7px}
+.chip{min-width:30px;height:30px;padding:0 7px;border-radius:15px;background:var(--sa);border:1.5px solid var(--b);display:inline-flex;align-items:center;justify-content:center;font-size:.78rem;font-weight:800}
+.chip.wkt{background:var(--no);color:#fff;border-color:var(--no)}
+.chip.bnd{background:var(--p);color:var(--a);border-color:var(--p)}
+nav{position:fixed;bottom:0;left:0;right:0;background:var(--s);border-top:2px solid var(--b);display:grid;grid-template-columns:repeat(4,1fr);z-index:40}
+.ntab{padding:9px 4px;border:none;background:none;color:var(--m);font-size:.75rem;font-weight:700;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px}
+.ntab.on{color:var(--p);background:#EFF6FF;border-top:3px solid var(--p)}
+body.sun .ntab.on{color:#000;background:#FEF08A;border-top-color:#000}
+table{width:100%;border-collapse:collapse;font-size:.82rem}
+th,td{padding:7px 5px;border-bottom:1px solid var(--b);text-align:left}
+th{font-size:.72rem;text-transform:uppercase;color:var(--m);background:var(--sa)}
+td.num,th.num{text-align:right}
+.fgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
+@media(max-width:500px){.fgrid{grid-template-columns:1fr}}
+label{display:block;font-size:.75rem;font-weight:700;margin-bottom:3px;color:var(--m)}
+input[type=text],input[type=number],select{width:100%;padding:7px 9px;border:1.5px solid var(--b);border-radius:6px;font-size:.9rem;background:var(--s);color:var(--t)}
+.prow{display:grid;grid-template-columns:1fr 78px 34px;gap:5px;margin-bottom:5px;align-items:center}
+.btnp{background:var(--p);color:#fff;border:none;border-radius:8px;padding:11px 14px;font-size:.92rem;font-weight:800;cursor:pointer;width:100%}
+.btns{background:var(--sa);color:var(--t);border:1.5px solid var(--b);border-radius:7px;padding:7px 10px;font-size:.82rem;font-weight:700;cursor:pointer}
+.mback{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;align-items:center;justify-content:center;padding:14px;z-index:90}
+.mback.open{display:flex}
+.mcard{background:var(--s);border-radius:12px;padding:16px;width:100%;max-width:420px;max-height:88vh;overflow-y:auto;border:2px solid var(--b)}
+.hide{display:none!important}
+</style>
+</head>
+<body>
+<header>
+  <h1 class="title">🏏 Blind Cricket <span class="tag">Live Scorer</span></h1>
+  <div style="display:flex;gap:6px">
+    <button type="button" class="hbtn" id="btnSun" onclick="toggleSun()">☀️ Sunlight</button>
+    <button type="button" class="hbtn" onclick="goTab('setup')">⚙️ Setup</button>
+  </div>
+</header>
 
-    body.sunlight-mode {
-      --bg: #FFFFFF;
-      --surface: #FFFFFF;
-      --surface-alt: #F3F4F6;
-      --text: #000000;
-      --text-muted: #1F2937;
-      --border: #000000;
-    }
+<div class="wrap">
+  <div id="p-score" class="panel">
+    <div class="hero">
+      <div class="meta"><span id="mTitle">ACT Blind Cricket vs Interstate XI</span><span id="mMode">NCIC 20-Over</span></div>
+      <div class="srow">
+        <div><div class="tbig" id="hBat">ACT Blind Cricket</div><div style="font-size:.78rem;opacity:.85" id="hBowl">vs Interstate Invitational</div></div>
+        <div style="text-align:right"><div class="sbig"><span id="hRuns">0</span>/<span id="hWkts">0</span></div><div class="obig">Overs: <span id="hOv">0.0</span> / <span id="hMaxOv">20</span></div></div>
+      </div>
+      <div class="tban hide" id="hTarg"></div>
+    </div>
 
-    * {
-      box-sizing: border-box;
-      -webkit-tap-highlight-color: transparent;
-    }
+    <div class="strip">
+      <div class="pill" id="qCard"><span style="font-size:.7rem;font-weight:700">B1 BOWLING QUOTA (40%)</span><strong id="qTxt">0.0 / 8.0 overs</strong></div>
+      <div class="pill ok" id="oCard"><span style="font-size:.7rem;font-weight:700">OVER DELIVERIES</span><strong id="oTxt">0/6 valid (0/10 balls)</strong></div>
+    </div>
 
-    body {
-      margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      background-color: var(--bg);
-      color: var(--text);
-      line-height: 1.4;
-      padding-bottom: 84px;
-    }
+    <div class="card">
+      <div class="ctitle"><span>At The Crease (Tap Name = Striker)</span><button type="button" class="btns" style="padding:3px 8px;font-size:.74rem" onclick="swapEnds()">⇄ Swap Ends</button></div>
+      <div id="creaseBox"></div>
+      <div class="b1bar hide" id="b1Bar">
+        <div class="b1lbl"><span>B1 STRIKER MULTIPLIER</span><span>NCIC Clause 18.1.4</span></div>
+        <div class="tgrp">
+          <button type="button" class="tbtn on" id="bLong" onclick="setDist(true)">4.5m+ (5 yds) → 3×</button>
+          <button type="button" class="tbtn" id="bShort" onclick="setDist(false)">Under 4.5m → 2×</button>
+        </div>
+      </div>
+    </div>
 
-    header {
-      background: var(--primary);
-      color: #FFFFFF;
-      padding: 12px 16px;
-      border-bottom: 4px solid var(--accent);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 8px;
-      position: sticky;
-      top: 0;
-      z-index: 50;
-    }
+    <div class="card">
+      <div class="ctitle"><span>Current Bowler</span><button type="button" class="btns" style="padding:3px 8px;font-size:.74rem" onclick="openBowl()">Change Bowler</button></div>
+      <div id="bowlTxt" style="font-weight:800;font-size:.95rem"></div>
+      <div class="oballs" id="overLog"></div>
+    </div>
 
-    .brand-title {
-      font-size: 1.05rem;
-      font-weight: 800;
-      letter-spacing: 0.3px;
-      margin: 0;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .brand-badge {
-      background: var(--accent);
-      color: var(--accent-text);
-      font-size: 0.7rem;
-      font-weight: 800;
-      padding: 2px 6px;
-      border-radius: 4px;
-      text-transform: uppercase;
-    }
-
-    .header-actions {
-      display: flex;
-      gap: 6px;
-    }
-
-    .btn-header {
-      background: rgba(255, 255, 255, 0.15);
-      color: #FFFFFF;
-      border: 1px solid rgba(255, 255, 255, 0.35);
-      border-radius: 6px;
-      padding: 6px 10px;
-      font-size: 0.8rem;
-      font-weight: 600;
-      cursor: pointer;
-    }
-
-    .btn-header.active {
-      background: var(--accent);
-      color: var(--accent-text);
-      border-color: var(--accent);
-    }
-
-    .container {
-      max-width: 760px;
-      margin: 0 auto;
-      padding: 12px;
-    }
-
-    .card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 14px;
-      margin-bottom: 12px;
-      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-    }
-
-    .card-title {
-      font-size: 0.85rem;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      color: var(--primary);
-      margin: 0 0 10px 0;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    body.sunlight-mode .card-title {
-      color: #000000;
-    }
-
-    .scoreboard-hero {
-      background: var(--primary);
-      color: #FFFFFF;
-      border-radius: 10px;
-      padding: 14px 16px;
-      margin-bottom: 12px;
-      border-left: 6px solid var(--accent);
-    }
-
-    .match-meta {
-      font-size: 0.8rem;
-      opacity: 0.9;
-      display: flex;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 4px;
-      margin-bottom: 6px;
-    }
-
-    .score-main-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-
-    .team-name-big {
-      font-size: 1.25rem;
-      font-weight: 800;
-    }
-
-    .score-big {
-      font-size: 2.1rem;
-      font-weight: 900;
-      color: var(--accent);
-      line-height: 1.1;
-    }
-
-    .overs-big {
-      font-size: 1.05rem;
-      font-weight: 600;
-      color: #FFFFFF;
-    }
-
-    .target-banner {
-      margin-top: 8px;
-      padding-top: 8px;
-      border-top: 1px solid rgba(255, 255, 255, 0.2);
-      font-size: 0.85rem;
-      font-weight: 600;
-      color: var(--accent);
-    }
-
-    .quota-strip {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-bottom: 12px;
-    }
-
-    .pill-stat {
-      flex: 1 1 140px;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 8px 10px;
-      font-size: 0.82rem;
-    }
-
-    .pill-stat strong {
-      display: block;
-      font-size: 0.95rem;
-    }
-
-    .pill-stat.warn {
-      background: var(--warning-bg);
-      color: var(--warning-text);
-      border-color: #F59E0B;
-    }
-
-    .pill-stat.ok {
-      border-left: 4px solid var(--success);
-    }
-
-    .badge-class {
-      display: inline-block;
-      font-size: 0.72rem;
-      font-weight: 800;
-      padding: 1px 6px;
-      border-radius: 4px;
-      vertical-align: middle;
-      margin-left: 4px;
-    }
-
-    .class-B1 {
-      background: var(--b1-bg);
-      color: var(--b1-text);
-      border: 1.5px solid var(--b1-border);
-    }
-
-    .class-B2 {
-      background: var(--b2-bg);
-      color: var(--b2-text);
-    }
-
-    .class-B3 {
-      background: var(--b3-bg);
-      color: var(--b3-text);
-    }
-
-    .batter-box {
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 10px;
-      margin-bottom: 8px;
-      background: var(--surface-alt);
-    }
-
-    .batter-box.striker {
-      border: 2px solid var(--primary);
-      background: #EFF6FF;
-    }
-
-    body.sunlight-mode .batter-box.striker {
-      background: #FEF9C3;
-      border-color: #000000;
-    }
-
-    .batter-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 6px;
-    }
-
-    .batter-name-btn {
-      background: none;
-      border: none;
-      padding: 0;
-      font-size: 1rem;
-      font-weight: 800;
-      color: var(--text);
-      cursor: pointer;
-      text-align: left;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .batter-runs {
-      font-size: 1.1rem;
-      font-weight: 800;
-    }
-
-    .runner-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-      font-size: 0.82rem;
-      padding-top: 6px;
-      border-top: 1px dashed var(--border);
-    }
-
-    .runner-row select {
-      flex: 1;
-      max-width: 220px;
-      padding: 5px 8px;
-      border-radius: 6px;
-      border: 1px solid var(--border);
-      font-size: 0.85rem;
-      background: var(--surface);
-      color: var(--text);
-    }
-
-    .b1-bar {
-      background: #FFFBEB;
-      border: 2px solid #F59E0B;
-      border-radius: 8px;
-      padding: 10px;
-      margin-bottom: 10px;
-    }
-
-    .b1-bar-label {
-      font-size: 0.8rem;
-      font-weight: 800;
-      color: #92400E;
-      margin-bottom: 6px;
-      display: flex;
-      justify-content: space-between;
-    }
-
-    .toggle-group {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px;
-    }
-
-    .toggle-btn {
-      padding: 10px 8px;
-      border-radius: 6px;
-      border: 2px solid #D97706;
-      background: #FFFFFF;
-      color: #111827;
-      font-weight: 800;
-      font-size: 0.85rem;
-      cursor: pointer;
-    }
-
-    .toggle-btn.active {
-      background: #D97706;
-      color: #FFFFFF;
-    }
-
-    .keypad-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 8px;
-      margin-bottom: 8px;
-    }
-
-    .key-btn {
-      padding: 14px 6px;
-      border-radius: 8px;
-      border: 1.5px solid var(--border);
-      background: var(--surface);
-      color: var(--text);
-      font-size: 1.1rem;
-      font-weight: 800;
-      cursor: pointer;
-      text-align: center;
-      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
-    }
-
-    .key-btn:active {
-      transform: scale(0.97);
-    }
-
-    .key-btn.boundary {
-      background: var(--primary);
-      color: var(--accent);
-      border-color: var(--primary);
-    }
-
-    .key-btn.extra {
-      background: #FEF3C7;
-      border-color: #F59E0B;
-      color: #78350F;
-      font-size: 0.92rem;
-    }
-
-    .key-btn.wicket {
-      background: var(--danger);
-      color: #FFFFFF;
-      border-color: var(--danger);
-      font-size: 0.95rem;
-    }
-
-    .key-sub {
-      display: block;
-      font-size: 0.68rem;
-      font-weight: 600;
-      opacity: 0.85;
-      margin-top: 2px;
-    }
-
-    .over-balls {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      align-items: center;
-      margin-top: 8px;
-    }
-
-    .ball-chip {
-      min-width: 34px;
-      height: 34px;
-      padding: 0 8px;
-      border-radius: 17px;
-      background: var(--surface-alt);
-      border: 1.5px solid var(--border);
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.82rem;
-      font-weight: 800;
-    }
-
-    .ball-chip.wkt {
-      background: var(--danger);
-      color: #FFFFFF;
-      border-color: var(--danger);
-    }
-
-    .ball-chip.bnd {
-      background: var(--primary);
-      color: var(--accent);
-      border-color: var(--primary);
-    }
-
-    .nav-tabs {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      background: var(--surface);
-      border-top: 2px solid var(--border);
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      z-index: 50;
-    }
-
-    .nav-tab {
-      padding: 10px 4px;
-      border: none;
-      background: none;
-      color: var(--text-muted);
-      font-size: 0.78rem;
-      font-weight: 700;
-      cursor: pointer;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 2px;
-    }
-
-    .nav-tab.active {
-      color: var(--primary);
-      background: #EFF6FF;
-      border-top: 3px solid var(--primary);
-    }
-
+    <div class="card">
+      <div class="ctitle"><span>Scoring Keypad</span><button type="button" class="btns" style="padding:3px 9px;font-size:.75rem;color:var(--no);border-color:var(--no)" onclick="undo()">↩ Undo Ball</button></div>
+      <div class="kgrid">
+        <button type="button" class="kbtn" onclick="run(0)">0<span class="ksub">Dot</span></button>
+        <button type="button" class="kbtn" onclick="run(1)" id="k1">1<span class="ksub" id="s1">1 run</span></button>
+        <button type="button" class="kbtn" onclick="run(2)" id="k2">2<span class="ksub" id="s2">2 runs</span></button>
+        <button type="button" class="kbtn" onclick="run(3)" id="k3">3<span class="ksub" id="s3">3 runs</span></button>
+        <button type="button" class="kbtn bnd" onclick="run(4)" id="k4">4<span class="ksub" id="s4">Boundary 4</span></button>
